@@ -28,17 +28,36 @@ function simpleStringify (object: any){
 const connect = async () => {
   log("loading...\n")
   const myProvider = (window as unknown as { ethereum: { request: (params: { method: string, params?: any }) => Promise<void> } }).ethereum;
-  if (!myProvider) throw new Error("Metamask not found");
+  if (!myProvider) {
+    log("Metamask not found");
+    return;
+  };
   log("Metamask found " + simpleStringify(myProvider));
+  log("calling eth_accounts...");
   const accounts = await myProvider.request({ method: "eth_accounts" });
   log("accounts found " + JSON.stringify(accounts));
+  log("calling eth_requestAccounts...");
   await myProvider.request({ method: "eth_requestAccounts" });
   log("connected to metamask");
+  log("calling eth_accounts...");
   const accounts2 = await myProvider.request({ method: "eth_accounts" });
   log("accounts2 found " + JSON.stringify(accounts2));
+};
+
+const sign = async () => {
+  log("loading...\n")
+  const myProvider = (window as unknown as { ethereum: { request: (params: { method: string, params?: any }) => Promise<void> } }).ethereum;
+  if (!myProvider) throw new Error("Metamask not found");
+  const accounts2 = await myProvider.request({ method: "eth_accounts" });
+  if (!(accounts2 as unknown as string[])[0]) {
+    log("no account found");
+    return;
+  }
+  
+  log("calling personal_sign...");
   const signedMessage = await myProvider.request({
     method: "personal_sign",
-    params: ["Hello world", (accounts as unknown as string[])[0]],
+    params: ["Hello world", (accounts2 as unknown as string[])[0]],
   });
   log("signedMessage " + signedMessage);
 };
@@ -46,6 +65,11 @@ const connect = async () => {
 
 <template>
   <button @click="connect">Connect</button>
-  <div>LOGS:</div>
+  <br />
+  <br />
+  <button @click="sign">Sign</button>
+  <br />
+  <br />
+  <div>Logs:</div>
   <pre>{{ logs }}</pre>
 </template>
