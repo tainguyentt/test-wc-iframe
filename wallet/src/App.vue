@@ -26,9 +26,8 @@ function simpleStringify (object: any){
 };
 
 const connect = async () => {
-  log("begining, print window, ", window);
-  log("begining, print deficonnect, ", deficonnect);
-  log("begining, print window.deficonnect, ",  window.deficonnect);
+  log("begining, print window, " + simpleStringify(window as Object));
+  log("begining, print window.deficonnect, " +  simpleStringify((window as any).deficonnect as Object));
 
   log("loading...\n")
   const myProvider = (window as unknown as { ethereum: { request: (params: { method: string, params?: any }) => Promise<void> } }).ethereum;
