@@ -40,7 +40,11 @@ const connect = async () => {
   const accounts = await myProvider.request({ method: "eth_accounts" });
   log("accounts found " + JSON.stringify(accounts));
   log("calling eth_requestAccounts...");
-  await myProvider.request({ method: "eth_requestAccounts" });
+  try {
+    await myProvider.request({ method: "eth_requestAccounts" });
+  } catch (error) {
+    log("eth_requestAccounts error " + JSON.stringify(error));
+  }
   log("connected to metamask");
   log("calling eth_accounts...");
   const accounts2 = await myProvider.request({ method: "eth_accounts" });
