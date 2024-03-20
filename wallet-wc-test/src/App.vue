@@ -52,7 +52,7 @@ const request = async () => {
 const sign = async () => {
   const rawMessageSig = await provider.value!.request({
     method: "personal_sign",
-    params: ["Hello World", provider.value!.accounts[0]],
+    params: ["0x48656c6c6f20576562334d6f64616c", provider.value!.accounts[0]],
   });
   log(rawMessageSig);
 };
