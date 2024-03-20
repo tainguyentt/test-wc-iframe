@@ -12,14 +12,10 @@ var provider = ref<Provider>();
 onMounted(async () => {
   provider.value = await EthereumProvider.init({
     projectId: 'e7a42e53358fcfe3456a9ea4d39ddcd0',
-    metadata: {
-      name: 'My Website',
-      description: 'My Website Description',
-      url: window.location.origin, // origin must match your domain & subdomain
-      icons: ['https://avatars.githubusercontent.com/u/37784886']
-    },
-    showQrModal: true,
-    optionalChains: [1, 137, 2020],
+    showQrModal: false,
+    chains: [1],
+    methods: ['eth_sendTransaction', 'personal_sign'],
+    events: ['connect', 'disconnect']
   })
 
   provider.value.on('display_uri', handleURI)
@@ -38,7 +34,7 @@ const sign = async () => {
   const addresses = await provider.value!.request({ method: 'eth_requestAccounts' });
   const rawMessageSig = await provider.value!.request({
     method: "personal_sign",
-    params: ["Hello World", (addresses as string[])[0]],
+    params: ["0x48656c6c6f20576562334d6f64616c", (addresses as string[])[0]],
   });
   log(rawMessageSig);
 };
