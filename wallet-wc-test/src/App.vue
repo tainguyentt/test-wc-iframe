@@ -59,6 +59,7 @@ const sign = async () => {
 </script>
 
 <template>
+  <h1>Wallet Connect</h1>
   <div v-if="session">
     <button @click="sign">Sign</button>
     <button @click="request">Request accounts</button>
